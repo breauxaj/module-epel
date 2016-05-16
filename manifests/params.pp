@@ -55,7 +55,9 @@ class epel::params {
         }
       }
     }
-    default: { }
+    default: {
+      fail("Unsupported version: ${::operatingsystem}")
+    }
   }
 
 }
