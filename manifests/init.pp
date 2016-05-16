@@ -27,29 +27,6 @@
 class epel (
   $ensure = 'latest'
 ) {
-  case $::operatingsystem {
-    'centos','redhat': {
-      case $::epel_version {
-        '6': {
-          if ( !$epel_installed ) {
-            notify{ 'default':
-              message => 'install EPEL repo'
-            }
-          }
-        }
-        '7': {
-          if ( !$epel_installed ) {
-            notify{ 'default':
-              message => 'install EPEL repo'
-            }
-          }
-        }
-        default: {
-          fail("Unsupported version: ${::epel_version}")
-        }
-      }
-    }
-    default: { }
-  }
+  
 
 }
