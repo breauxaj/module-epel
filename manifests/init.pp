@@ -31,14 +31,14 @@ class epel (
     'centos','redhat': {
       case $::epel_version {
         '6': {
-          if ( $epel_installed ) {
+          if ( !$epel_installed ) {
             notify{ 'default':
               message => 'install EPEL repo'
             }
           }
         }
         '7': {
-          if ( $epel_installed ) {
+          if ( !$epel_installed ) {
             notify{ 'default':
               message => 'install EPEL repo'
             }
