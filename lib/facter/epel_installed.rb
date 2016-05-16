@@ -4,9 +4,9 @@ Facter.add(:epel_installed) do
   setcode do
     rpm = %x{rpm -qa | grep epel-release}.chomp
     if rpm !~ /epel-release/
-      output = 'false'
+      output = false
     else
-      output = 'true'
+      output = true
     end
     output
   end
