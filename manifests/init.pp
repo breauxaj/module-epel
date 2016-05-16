@@ -26,6 +26,26 @@
 #
 class epel (
   $ensure = 'latest'
-) inherits ::epel::params {
+) {
+  case $::operatingsystem {
+    'centos','redhat': {
+      case $::epel_version {
+        '6': {
+          if ( !$epel_installed ) {
+            notify("install EPEL repo")
+          }
+        }
+        '7': {
+          if ( !$epel_installed ) {
+            notify("install EPEL repo")
+          }
+        }
+        default: {
+          fail("Unsupported version: ${::epel_version}")
+        }
+      }
+    }
+    default: { }
+  }
 
 }
