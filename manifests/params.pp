@@ -26,6 +26,8 @@ class epel::params {
             yumrepo { 'epel-temp':
               ensure => absent
             }
+            
+            $epel_package = 'epel-release'
           }
         }
         '7': {
@@ -44,6 +46,8 @@ class epel::params {
             yumrepo { 'epel-temp':
               ensure => absent
             }
+
+            $epel_package = 'epel-release'
           }
         }
         default: {
