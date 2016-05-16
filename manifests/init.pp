@@ -32,12 +32,12 @@ class epel (
       case $::epel_version {
         '6': {
           if ( $epel_installed ) {
-            notify{ default: message => "install EPEL repo" }
+            notify{ 'default': message => "install EPEL repo" }
           }
         }
         '7': {
           if ( $epel_installed ) {
-            notify{ default: message => "install EPEL repo" }
+            notify{ 'default': message => "install EPEL repo" }
           }
         }
         default: {
