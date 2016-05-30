@@ -4,12 +4,14 @@
 #
 # Actions:
 #   - Defines numerous parameters used by other classes
-#   - Does not support other operatingsystem patterns - redhat only
+#   - Does not support other osfamily patterns - RedHat only
 #
 class epel::params {
-  case $::operatingsystem {
-    'centos','redhat': {
-      case $::epel_version {
+  case $::osfamily {
+    'RedHat': {
+      $epel_package = 'epel-release'
+    
+      case $::operatingsystemmajrelease {
         '6': {
           if ( !$epel_installed ) {
             yumrepo { 'epel-temp':
@@ -19,15 +21,20 @@ class epel::params {
               gpgcheck       => '1',
               gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6',
               descr          => 'Extra Packages for Enterprise Linux 6 - $basearch',
+              require        => File['/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6'],
             }
             
-            $epel_package = 'epel-release'
+            file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6':
+              ensure => present,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0644',
+              source => 'puppet:///modules/epel/RPM-GPG-KEY-EPEL-6',
+            }
           } else {
             yumrepo { 'epel-temp':
               ensure => absent
             }
-            
-            $epel_package = 'epel-release'
           }
         }
         '7': {
@@ -40,24 +47,27 @@ class epel::params {
               gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
               descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
             }
-            
-            $epel_package = 'epel-release'
+
+            file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7':
+              ensure => present,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0644',
+              source => 'puppet:///modules/epel/RPM-GPG-KEY-EPEL-7',
+            }
           } else {
             yumrepo { 'epel-temp':
               ensure => absent
             }
-
-            $epel_package = 'epel-release'
           }
         }
         default: {
-          fail("Unsupported version: ${::epel_version}")
+          fail("The ${module_name} module is not supported on an ${::operatingsystem}${::operatingsystemmajrelease} distribution.")
         }
       }
     }
     default: {
-      fail("Unsupported version: ${::operatingsystem}")
+      fail("The ${module_name} module is not supported on an ${::osfamily} based system.")
     }
   }
-
 }
