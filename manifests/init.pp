@@ -25,7 +25,7 @@
 #    }
 #
 class epel (
-  $ensure = 'latest'
+  $ensure = $::epel::params::epel_package_ensure
 ) inherits ::epel::params {
   package { $::epel::params::epel_package:
     ensure  => $ensure,

@@ -7,10 +7,12 @@
 #   - Does not support other osfamily patterns - RedHat only
 #
 class epel::params {
+  $epel_package_ensure = 'latest'
+
   case $::operatingsystem {
     'CentOS', 'RedHat': {
       $epel_package = 'epel-release'
-    
+
       case $::operatingsystemmajrelease {
         '6': {
           if ( !$epel_installed ) {
@@ -23,7 +25,7 @@ class epel::params {
               descr          => 'Extra Packages for Enterprise Linux 6 - $basearch',
               require        => File['/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6'],
             }
-            
+
             file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6':
               ensure => present,
               owner  => 'root',
