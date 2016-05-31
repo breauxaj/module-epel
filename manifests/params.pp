@@ -7,8 +7,8 @@
 #   - Does not support other osfamily patterns - RedHat only
 #
 class epel::params {
-  case $::osfamily {
-    'RedHat': {
+  case $::operatingsystem {
+    'CentOS', 'RedHat': {
       $epel_package = 'epel-release'
     
       case $::operatingsystemmajrelease {
@@ -62,12 +62,12 @@ class epel::params {
           }
         }
         default: {
-          fail("The ${module_name} module is not supported on an ${::operatingsystem}${::operatingsystemmajrelease} distribution.")
+          fail("The ${module_name} module is not supported on an ${::operatingsystem} ${::operatingsystemmajrelease} distribution.")
         }
       }
     }
     default: {
-      fail("The ${module_name} module is not supported on an ${::osfamily} based system.")
+      fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")
     }
   }
 }
