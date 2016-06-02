@@ -10,7 +10,7 @@ class epel::params {
   $epel_package_ensure = 'latest'
 
   case $::operatingsystem {
-    'CentOS', 'RedHat': {
+    'CentOS', 'OracleLinux', 'RedHat': {
       $epel_package = 'epel-release'
 
       case $::operatingsystemmajrelease {
