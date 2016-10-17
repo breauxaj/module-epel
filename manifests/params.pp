@@ -15,7 +15,7 @@ class epel::params {
 
       case $::operatingsystemmajrelease {
         '6': {
-          if ( !$epel_installed ) {
+          if ( !$::epel_installed ) {
             yumrepo { 'epel-temp':
               baseurl        => 'http://download.fedoraproject.org/pub/epel/6/$basearch',
               failovermethod => 'priority',
@@ -40,7 +40,7 @@ class epel::params {
           }
         }
         '7': {
-          if ( !$epel_installed ) {
+          if ( !$::epel_installed ) {
             yumrepo { 'epel-temp':
               baseurl        => 'http://download.fedoraproject.org/pub/epel/7/$basearch',
               failovermethod => 'priority',
