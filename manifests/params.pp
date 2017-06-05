@@ -9,67 +9,44 @@
 class epel::params {
   $epel_package_ensure = 'latest'
 
-  case $::operatingsystem {
-    'CentOS', 'OracleLinux', 'RedHat', 'Scientific': {
+  case $::osfamily {
+    'RedHat': {
       $epel_package = 'epel-release'
 
-      case $::operatingsystemmajrelease {
-        '6': {
-          if ( !$::epel_installed ) {
-            yumrepo { 'epel-temp':
-              baseurl        => 'http://download.fedoraproject.org/pub/epel/6/$basearch',
-              failovermethod => 'priority',
-              enabled        => '1',
-              gpgcheck       => '1',
-              gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6',
-              descr          => 'Extra Packages for Enterprise Linux 6 - $basearch',
-              require        => File['/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6'],
-            }
-
-            file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6':
-              ensure => present,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0644',
-              source => 'puppet:///modules/epel/RPM-GPG-KEY-EPEL-6',
-            }
-          } else {
-            yumrepo { 'epel-temp':
-              ensure => absent
-            }
-          }
-        }
-        '7': {
-          if ( !$::epel_installed ) {
-            yumrepo { 'epel-temp':
-              baseurl        => 'http://download.fedoraproject.org/pub/epel/7/$basearch',
-              failovermethod => 'priority',
-              enabled        => '1',
-              gpgcheck       => '1',
-              gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
-              descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
-            }
-
-            file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7':
-              ensure => present,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0644',
-              source => 'puppet:///modules/epel/RPM-GPG-KEY-EPEL-7',
-            }
-          } else {
-            yumrepo { 'epel-temp':
-              ensure => absent
-            }
-          }
-        }
+      case $::operatingsystem {
         default: {
-          fail("The ${module_name} module is not supported on an ${::operatingsystem} ${::operatingsystemmajrelease} distribution.")
+          case $::operatingsystemmajrelease {
+            default: {
+              if ( !$::epel_installed ) {
+                yumrepo { 'epel-temp':
+                  baseurl        => 'http://download.fedoraproject.org/pub/epel/7/$basearch',
+                  failovermethod => 'priority',
+                  enabled        => '1',
+                  gpgcheck       => '1',
+                  gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
+                  descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
+                }
+
+                file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7':
+                  ensure => present,
+                  owner  => 'root',
+                  group  => 'root',
+                  mode   => '0644',
+                  source => 'puppet:///modules/epel/RPM-GPG-KEY-EPEL-7',
+                }
+              } else {
+                yumrepo { 'epel-temp':
+                  ensure => absent
+                }
+              }
+            }
+          }
         }
       }
     }
     default: {
-      fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")
+      fail("The ${module_name} module is not supported on an ${::osfamily} based system.")
     }
   }
+
 }
